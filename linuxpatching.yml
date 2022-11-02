@@ -3,7 +3,7 @@
   hosts: all
 
   roles:
-    - shadowman_patching
+    - { role: shadowman_patching, when: "'random' in group_names" }
 
   tasks:
 
