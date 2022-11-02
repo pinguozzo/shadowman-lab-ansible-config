@@ -11,5 +11,5 @@
       ansible.builtin.include_role:
         name: shadowman.reports.build_report_linux_patch
         apply:
-          delegate_to: {{ groups[['foreman_hostcollection_reporting'][0]] }}
+          delegate_to: "{{ groups[['foreman_hostcollection_reporting'][0]] }}"
           run_once: true
