@@ -14,3 +14,4 @@
         apply:
           delegate_to: "{{ groups['foreman_hostcollection_reporting'][0] }}"
           run_once: true
+      when: inventory_hostname == ansible_play_batch[0]
