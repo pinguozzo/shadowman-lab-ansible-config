@@ -1,7 +1,6 @@
 ---
 - name: Patch RHEL Servers
   hosts: all 
-  ignore_unreachable: true
 
   roles:
     - { role: shadowman_patching, when: "'foreman_hostcollection_patching' in group_names" }
