@@ -11,7 +11,7 @@
 
   pre_tasks:
     - name: ensure yum-utils is installed
-      ansible.builtin.package
+      ansible.builtin.package:
         name: yum-utils
         state: present
 
