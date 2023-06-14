@@ -2,10 +2,6 @@
 - name: Patch RHEL Servers
   hosts: foreman_hostcollection_patching
 
-  vars_files:
-    - "{{ playbook_dir }}/../../vaults/{{ env }}-vault.yml"
-
-
   roles:
     - shadowman_patching
 
