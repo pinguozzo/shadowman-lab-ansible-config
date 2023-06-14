@@ -1,16 +1,39 @@
 ---
 - name: Patch RHEL Servers
-  hosts: all 
+  hosts: foreman_hostcollection_patching
+
+  vars_files:
+    - "{{ playbook_dir }}/../../vaults/{{ env }}-vault.yml"
+
 
   roles:
-    - { role: shadowman_patching, when: "'foreman_hostcollection_patching' in group_names" }
+    - shadowman_patching
+
+  pre_tasks:
+    - name: ensure yum-utils is installed
+      ansible.builtin.package
+        name: yum-utils
+        state: present
 
   tasks:
+    - name: add reporting host to group
+      ansible.builtin.add_host:
+        hostname: pampanuto.mgmt.zg.pinguozzo.com
+        groups: reporting
+ 
+    - name: show reporting host
+      debug: var=groups['reporting']
+
+    - name: wait for vm to become reachable
+      ansible.builtin.wait_for_connection:
+        timeout: 900
+      delegate_to: "{{ item }}"
+      loop: "{{ groups['reporting'] }}"
 
     - name: Build the report
       ansible.builtin.include_role:
         name: shadowman.reports.build_report_linux_patch
         apply:
-          delegate_to: "{{ groups['foreman_hostcollection_reporting'][0] }}"
+          delegate_to: "{{ groups['reporting'][0] }}"
           run_once: true
       when: inventory_hostname == ansible_play_batch[0]
